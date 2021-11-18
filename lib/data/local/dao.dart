@@ -16,7 +16,7 @@ class ItemDao{
     );
   }
 
-  Future<bool> checkUser(String item) async {
+  Future<bool> checkItem(String item) async {
     Database database = await dh.database;
     bool isValid = false;
     List<Map<String, dynamic>> map =
@@ -51,4 +51,11 @@ class ItemDao{
     return todoList;
   }
 
+Future<int> getCount() async {
+  Database database = await dh.database;
+    List<Map<String, dynamic>> x = await database.rawQuery('SELECT COUNT (*) from ${DatabaseHelper
+        .todoTable}');
+    int result = Sqflite.firstIntValue(x);
+    return result;
+  }
 }

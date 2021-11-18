@@ -36,33 +36,4 @@ class DatabaseHelper {
   }
 
 
-  /*Future<int> insertTodo(ToDoListModel todo) async {
-    Database db = await this.database;
-    var result = await db.insert(todoTable, todo.toMap());
-    return result;
-  }
-*/
-  /*Future<int> updateTodo(ToDoListModel todo) async {
-    var db = await this.database;
-    var result = await db.update(todoTable, todo.toMap(), where: '$colItem = ?', whereArgs: [todo
-        .item]);
-    return result;
-  }*/
-
-
-  Future<int> deleteTodo(int item) async {
-    var db = await this.database;
-    int result = await db.rawDelete('DELETE FROM $todoTable WHERE $colItem = $item');
-    return result;
-  }
-
-  /*Future<int> getCount() async {
-    Database db = await this.database;
-    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $todoTable');
-    int result = Sqflite.firstIntValue(x);
-    return result;
-  }*/
-
-
-
 }

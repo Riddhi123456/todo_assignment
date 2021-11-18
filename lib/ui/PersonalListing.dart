@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:todo_assignment/data/local/dao.dart';
 import 'package:todo_assignment/data/local/db/database_helper.dart';
 import 'package:todo_assignment/model/ToDoListModel.dart';
@@ -15,7 +14,7 @@ class PersonalListing extends StatefulWidget{
 class PersonalListingState extends State<PersonalListing>{
   DatabaseHelper databaseHelper;
   ItemDao todo=new ItemDao();
-  List<ToDoListModel> todoList=[ToDoListModel("Go",0)];
+  List<ToDoListModel> todoList=List.empty(growable: true);
   int count = 0;
   List<String> _list = ["Go to the gym", "Buy groceries", "Get the haircut", "Mow the lawn", "Pic"
       "k up dry cleaning"];
@@ -37,11 +36,6 @@ class PersonalListingState extends State<PersonalListing>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if (todoList == null) {
-      todoList = List<ToDoListModel>();
-      updateListView();
-    }
-
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -62,18 +56,10 @@ class PersonalListingState extends State<PersonalListing>{
                     alignment: Alignment.centerLeft,
 
                   ),
-                  secondaryBackground: InkWell(
-                    onTap: () {
-                      setState(() {
-                        _delete(context, todoList.elementAt(index));
-                        print(todoList.length);
-                      });
-                    },
-                    child: Container(
-                      child: Icon(Icons.delete),
-                      color: Colors.red,
-                      alignment: Alignment.centerRight,
-                    ),
+                  secondaryBackground: Container(
+                    child: Icon(Icons.delete),
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
                   ),
                   child: Container(
                     decoration: BoxDecoration(
@@ -112,31 +98,5 @@ class PersonalListingState extends State<PersonalListing>{
         ),
       ),
     );
-  }
-
-  void _delete(BuildContext context, ToDoListModel todo) async {
-    int result = await databaseHelper.deleteTodo(todo.id);
-    if (result != 0) {
-      _showSnackBar(context, 'Todo Deleted Successfully');
-      updateListView();
-    }
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  void updateListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
-    dbFuture.then((database) {
-      Future<List<ToDoListModel>> todoListFuture = todo.getTodoList();
-      todoListFuture.then((todoList) {
-        setState(() {
-          this.todoList = todoList;
-          this.count = todoList.length;
-        });
-      });
-    });
   }
 }
