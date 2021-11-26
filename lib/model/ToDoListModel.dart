@@ -9,7 +9,7 @@ class ToDoListModel{
   int _isDeleted;
 
 
-  ToDoListModel(this._item, this._isDeleted);
+  ToDoListModel(this._id,this._item, this._isDeleted);
 
   String get item => _item;
 

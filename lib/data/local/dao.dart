@@ -12,7 +12,7 @@ class ItemDao{
     return database.insert(
       DatabaseHelper.todoTable,
       itemModel.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 
@@ -23,11 +23,9 @@ class ItemDao{
     await database.query(DatabaseHelper.todoTable, where: "item = ?", whereArgs: [item]);
     List<ToDoListModel> todoList = new List();
 
-    print(map);
-    for(Map m in map){
-      todoList.add(ToDoListModel.fromMapObject(m));
+    if(map!=null && map.isNotEmpty){
+      isValid = true;
     }
-
     return isValid;
   }
 
@@ -50,9 +48,20 @@ class ItemDao{
 
     return todoList;
   }
+  Future<int> deleteItem(int id) async{ //returns number of items deleted
+    Database database = await dh.database;
 
-Future<int> getCount() async {
-  Database database = await dh.database;
+    int result = await database.delete(
+        DatabaseHelper.todoTable, //table name
+        where: "id = ?",
+        whereArgs: [id] // use whereArgs to avoid SQL injection
+    );
+
+    return result;
+  }
+
+  Future<int> getCount() async {
+    Database database = await dh.database;
     List<Map<String, dynamic>> x = await database.rawQuery('SELECT COUNT (*) from ${DatabaseHelper
         .todoTable}');
     int result = Sqflite.firstIntValue(x);

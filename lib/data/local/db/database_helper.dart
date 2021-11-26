@@ -34,6 +34,4 @@ class DatabaseHelper {
     await db.execute(
         "CREATE TABLE $todoTable(id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT, isDelete int)");
   }
-
-
 }

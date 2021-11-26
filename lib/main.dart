@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_assignment/ui/PersonalListing.dart';
+import 'package:todo_assignment/ui/SplashScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -7,7 +7,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,7 +14,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: PersonalListing(),
+      routes: {
+        '/' :(context) => SplashScreen(),
+      },
     );
   }
 }
